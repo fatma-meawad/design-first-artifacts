@@ -1,0 +1,42 @@
+import { type ValidationType, AppError, ZERO } from '../../../../core';
+import { type CoreDto } from '../../../shared';
+
+export class Update{{name}}Dto implements CoreDto<Update{{name}}Dto> {
+  private constructor(
+    public readonly id: {{idType}},
+    {{#each attributes}}
+    {{#unless (eq name 'id')}}public readonly {{name}}?: {{type}},{{/unless}}
+    {{/each}}
+  ) {
+    this.validate(this);
+  }
+
+  public validate(dto: Update{{name}}Dto): void {
+    const errors: ValidationType[] = [];
+    const { id{{#each attributes}}{{#unless (eq name 'id')}}, {{name}}{{/unless}}{{/each}} } = dto;
+
+    if (!id || isNaN(Number(id))) {
+      errors.push({ fields: ['id'], constraint: 'Id is not valid' });
+    }
+    {{#each attributes}}
+    {{#unless (eq name 'id')}}
+    {{#if minLength}}
+    if ({{name}} !== undefined && {{name}}.length < {{minLength}}) {
+      errors.push({ fields: ['{{name}}'], constraint: '{{name}} must be at least {{minLength}} characters' });
+    }
+    {{/if}}
+    {{/unless}}
+    {{/each}}
+
+    if (errors.length > ZERO) throw AppError.badRequest('Error validating update {{nameLower}}', errors);
+  }
+
+  public static create(object: Record<string, unknown>): Update{{name}}Dto {
+    return new Update{{name}}Dto(
+      object.id as {{idType}},
+      {{#each attributes}}
+      {{#unless (eq name 'id')}}object.{{name}} as {{type}}{{#unless @last}},{{/unless}}{{/unless}}
+      {{/each}}
+    );
+  }
+}

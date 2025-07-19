@@ -1,0 +1,65 @@
+{
+
+    "extract_api_paths": [
+        {
+            "get-variables-from-parent": "artifact_paths,artifacts,  model"
+        },
+        {
+            "copy-variables-between-objects": "artifact_paths, this, main_output, be_history"
+        },
+        {
+            "copy-variables-between-objects": "step, this, output"
+        },
+        {
+            "update-message": "message, Extracting Paths"
+        },
+        {
+            "update-card-fields": "model"
+        },
+        {
+            "assign-user": "model"
+        },
+        {
+            "read-repo-json-file": "be_history, history"
+        },
+        {
+            "get-prompt-data": "prompt, paths_prompt"
+        },
+        {
+            "set-project-variable": "fm_paths_path,main_output, paths"
+        },
+        {
+            "update-message": "message, 🔥, history_message"
+        },
+        {
+            "call-llm-history": ", prompt, last_output, history"
+        },
+        {
+            "create-output-comment": "last_output, +1"
+        },
+        {
+            "update-message": "size, prompt_size"
+        },
+        {
+            "write-json-to-repo": "fm_paths_path, last_output, list of paths"
+        },
+        {
+            "write-json-to-repo": "be_history, history, paths schema"
+        },
+        {
+            "push-element": "output,fm_paths_path"
+        },
+        {
+            "copy-variable-from-objects": "this, output, step, output"
+        },
+        {
+            "copy-variable-from-objects": "this, paths_description, artifacts, fm_paths_path"
+        },
+        {
+            "copy-variables-between-objects": "this, artifact_paths, fm_paths_path"
+        },
+        {
+            "update-workflow-steps": "step, artifact_paths, artifacts"
+        }
+    ]
+}

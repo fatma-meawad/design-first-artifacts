@@ -1,0 +1,93 @@
+{
+    "paths_detail_prompt": "prompts/openapi/OpenAPIPaths.md",
+    "extract_path_details": [
+        {
+            "get-variables-from-parent": "artifact_paths,artifacts,  model"
+        },
+        {
+            "copy-variables-between-objects": "artifact_paths, this, main_output, be_history, fm_paths_path"
+        },
+        {
+            "copy-variables-between-objects": "step, this, output"
+        },
+        {
+            "update-message": "message, Extracting Paths details"
+        },
+        {
+            "update-card-fields": "model"
+        },
+        {
+            "assign-user": "model"
+        },
+        {
+            "read-repo-json-file": "be_history, history"
+        },
+        {
+            "read-repo-json-file": "fm_paths_path, mpaths"
+        },
+        {
+            "copy-variable-from-objects": "mpaths, paths, this, mpaths_list"
+        },
+        {
+            "get-prompt-data": "prompt, paths_detail_prompt"
+        },
+        {
+            "set-project-variable": "fm_endpoints_path,main_output, endpoints"
+        },
+        {
+            "start-loop": " mpaths_list, create_path, path_key, story_value, story_index, path_length"
+        },
+        {
+            "update-message": "size, prompt_size"
+        },
+        {
+            "write-json-to-repo": "fm_endpoints_path, operations, list of paths"
+        },
+        {
+            "write-json-to-repo": "be_history, history, endpoints"
+        },
+        {
+            "push-element": "output,fm_endpoints_path"
+        },
+        {
+            "copy-variable-from-objects": "this, output, step, output"
+        },
+        {
+            "copy-variable-from-objects": "this, endpoints_description, artifacts, fm_endpoints_path"
+        },
+        {
+            "copy-variables-between-objects": "this, artifact_paths, fm_endpoints_path"
+        },
+        {
+            "update-workflow-steps": "step, artifact_paths, artifacts"
+        }
+    ],"create_path": [
+        {
+            "update-message": "reflect,path_length"
+        },
+        {
+            "set-prompt-variable": "prompt,new_prompt,fm_path, path_key"
+        },
+        {
+            "update-message": "message, 🔥, history_message"
+        },
+        {
+            "call-llm-history": ", new_prompt, last_output, history"
+        },
+        {
+            "pop": "history, 2"
+        },
+        {
+            "push": "history, assistant, last_output"
+        },
+        {
+            "extract-json-from-string": "last_output, output_obj"
+        },
+        {
+            "reset-object-variable": "output_obj, general_notes"
+        },
+        {
+            "combine-output-objects": "operations, output_obj"
+        }
+    ]
+}

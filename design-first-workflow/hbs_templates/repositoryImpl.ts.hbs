@@ -1,0 +1,44 @@
+import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
+
+import {
+  type {{name}}Entity,
+  type {{name}}Datasource,
+  {{#each dtos}}
+  type {{this}},
+  {{/each}}
+  type {{name}}Repository
+} from '../domain';
+
+export class {{name}}RepositoryImpl implements {{name}}Repository {
+  constructor(private readonly datasource: {{name}}Datasource) {}
+
+  {{#if hasCreate}}
+  async create(createDto: Create{{name}}Dto): Promise<{{name}}Entity> {
+    return await this.datasource.create(createDto);
+  }
+  {{/if}}
+
+  {{#if hasGetAll}}
+  async getAll(pagination: PaginationDto): Promise<PaginationResponseEntity<{{name}}Entity[]>> {
+    return await this.datasource.getAll(pagination);
+  }
+  {{/if}}
+
+  {{#if hasGetById}}
+  async getById(getByIdDto: Get{{name}}ByIdDto): Promise<{{name}}Entity> {
+    return await this.datasource.getById(getByIdDto);
+  }
+  {{/if}}
+
+  {{#if hasUpdate}}
+  async update(updateDto: Update{{name}}Dto): Promise<{{name}}Entity> {
+    return await this.datasource.update(updateDto);
+  }
+  {{/if}}
+
+  {{#if hasDelete}}
+  async delete(getByIdDto: Get{{name}}ByIdDto): Promise<{{name}}Entity> {
+    return await this.datasource.delete(getByIdDto);
+  }
+  {{/if}}
+}

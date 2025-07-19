@@ -1,0 +1,84 @@
+{
+
+    "repo_obj":{},
+    "review_implementation": [
+        {
+            "get-variables-from-parent": "artifact_paths,artifacts, model, client_repo, server-paths"
+        },
+        {
+            "copy-variables-between-objects": "step, this, output"
+        },
+        {
+            "copy-variables-between-objects": "artifact_paths, this, main_output, dev_plan, techlead_memory, review_prompt, repo_state, plan_index, plan_length, local_path, full_repo_file"
+        },
+        {
+            "read-repo-json-file": "techlead_memory, lead_memory"
+        }, 
+        {
+            "read-repo-json-file": "full_repo_file, full_repo"
+        },
+        {
+            "update-message": "reflect, Reviewing Increment"
+        },
+        {
+            "update-message": "message, 🔥, history_message"
+        },
+        {
+            "call-llm-history": "role ,review_prompt, last_output, lead_memory"
+        },
+        {
+            "extract-json-from-string": "last_output,output_obj"
+        },
+        {
+            "copy-variables-between-objects": "output_obj, this, generated_files, general_notes"
+        },
+        {
+            "obj-to-list-obj": "generated_files, project_files"
+        },
+        {
+            "start-loop": "project_files, push_dir_files, file_path, file_content, file_index, files_length, file_obj"
+        },
+        {
+            "write-repo-state": "local_path, repo_obj"
+        },
+        {
+            "pop": "lead_memory, 2"
+        },
+        {
+            "update-message": "size, prompt_size"
+        },
+        {
+            "reset-object-variable": "artifact_paths, review_prompt"
+        },
+        {
+            "write-json-to-repo": "repo_state,repo_obj, update repo state"
+        },
+        {
+            "write-json-to-repo": "techlead_memory,lead_memory, update tech lead memory"
+        },
+        {
+            "write-json-to-repo": "full_repo_file,full_repo, full repo data"
+        },
+        {
+            "check-exit-condition": "step, plan_length, plan_index"
+        },
+        {
+            "copy-variables-between-objects": "this, artifact_paths,repo_state, full_repo_file"
+        },
+        {
+            "update-workflow-steps": "step, artifact_paths, artifacts"
+        }
+    ],
+    
+"push_dir_files":[
+    {
+        "copy-variables-between-objects": "file_content, this, description, content"
+    },
+    {
+        "set-object-key-attributes": "repo_obj, file_path, content"
+    },
+    {
+        "set-object-key-attributes": "full_repo, file_path, content"
+    }
+]
+}

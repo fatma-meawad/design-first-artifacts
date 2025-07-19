@@ -1,0 +1,43 @@
+import { type ValidationType, AppError, ZERO } from '../../../../core';
+import { type CoreDto } from '../../../shared';
+
+export class Create{{name}}Dto implements CoreDto<Create{{name}}Dto> {
+  private constructor(
+    {{#each attributes}}
+    {{#if required}}public readonly {{name}}: {{type}},{{/if}}
+    {{/each}}
+  ) {
+    this.validate(this);
+  }
+
+  public validate(dto: Create{{name}}Dto): void {
+    const errors: ValidationType[] = [];
+    {{#each attributes}}
+    {{#if required}}
+    if (!dto.{{name}}{{#if (eq type 'string')}} || dto.{{name}}.length === ZERO{{/if}}) {
+      errors.push({ fields: ['{{name}}'], constraint: '{{name}} is required' });
+    }
+    {{/if}}
+    {{#if minLength}}
+    if (dto.{{name}} && dto.{{name}}.length < {{minLength}}) {
+      errors.push({ fields: ['{{name}}'], constraint: '{{name}} must be at least {{minLength}} characters' });
+    }
+    {{/if}}
+    {{#if format}}
+    if (dto.{{name}} && !{{format}}.test(dto.{{name}})) {
+      errors.push({ fields: ['{{name}}'], constraint: '{{name}} must be a valid email' });
+    }
+    {{/if}}
+    {{/each}}
+
+    if (errors.length > ZERO) throw AppError.badRequest('Error validating create {{nameLower}}', errors);
+  }
+
+  public static create(object: Record<string, unknown>): Create{{name}}Dto {
+    return new Create{{name}}Dto(
+      {{#each attributes}}
+      {{#if required}}object.{{name}} as {{type}}{{#unless @last}},{{/unless}}{{/if}}
+      {{/each}}
+    );
+  }
+}

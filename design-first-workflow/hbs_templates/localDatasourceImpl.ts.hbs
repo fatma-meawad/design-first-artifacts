@@ -1,0 +1,86 @@
+import { ONE, ZERO, AppError } from '../../../core';
+import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
+import {
+  {{name}}Entity,
+  {{#each dtos}}
+  type {{this}},
+  {{/each}}
+  type {{name}}Datasource
+} from '../domain';
+
+const {{constantCase name}}_MOCK = [
+  {{#each mockData}}
+  {
+    {{#each this}}
+    {{@key}}: {{{this}}},
+    {{/each}}
+  }{{#unless @last}},{{/unless}}
+  {{/each}}
+];
+
+export class {{name}}DatasourceImpl implements {{name}}Datasource {
+  {{#if hasGetAll}}
+  public async getAll(pagination: PaginationDto): Promise<PaginationResponseEntity<{{name}}Entity[]>> {
+    const { page, limit } = pagination;
+
+    const data = {{constantCase name}}_MOCK;
+    const total = {{constantCase name}}_MOCK.length;
+
+    const totalPages = Math.ceil(total / limit);
+    const nextPage = page < totalPages ? page + ONE : null;
+    const prevPage = page > ONE ? page - ONE : null;
+
+    return {
+      results: data.slice((page - ONE) * limit, page * limit).map((item) => {{name}}Entity.fromJson(item)),
+      currentPage: page,
+      nextPage,
+      prevPage,
+      total,
+      totalPages
+    };
+  }
+  {{/if}}
+
+  {{#if hasGetById}}
+  public async getById(getByIdDto: Get{{name}}ByIdDto): Promise<{{name}}Entity> {
+    const item = {{constantCase name}}_MOCK.find((item) => item.id === getByIdDto.id);
+    if (!item) throw AppError.notFound(`{{name}} with id ${getByIdDto.id} not found`);
+    return {{name}}Entity.fromJson(item);
+  }
+  {{/if}}
+
+  {{#if hasCreate}}
+  public async create(createDto: Create{{name}}Dto): Promise<{{name}}Entity> {
+    const createdItem = { 
+      id: {{constantCase name}}_MOCK.length + ONE, 
+      ...createDto,
+      {{#if hasIsCompleted}}isCompleted: false{{/if}} 
+    };
+    {{constantCase name}}_MOCK.push(createdItem);
+    return {{name}}Entity.fromJson(createdItem);
+  }
+  {{/if}}
+
+  {{#if hasUpdate}}
+  public async update(updateDto: Update{{name}}Dto): Promise<{{name}}Entity> {
+    const { id } = await this.getById(updateDto);
+    const index = {{constantCase name}}_MOCK.findIndex((item) => item.id === id);
+
+    {{constantCase name}}_MOCK[index] = {
+      ...{{constantCase name}}_MOCK[index],
+      ...Object.fromEntries(Object.entries(updateDto).filter(([_, v]) => v !== undefined)
+    };
+
+    return {{name}}Entity.fromJson({{constantCase name}}_MOCK[index]);
+  }
+  {{/if}}
+
+  {{#if hasDelete}}
+  public async delete(getByIdDto: Get{{name}}ByIdDto): Promise<{{name}}Entity> {
+    const { id } = await this.getById(getByIdDto);
+    const index = {{constantCase name}}_MOCK.findIndex((item) => item.id === id);
+    const deletedItem = {{constantCase name}}_MOCK.splice(index, ONE)[ZERO];
+    return {{name}}Entity.fromJson(deletedItem);
+  }
+  {{/if}}
+}

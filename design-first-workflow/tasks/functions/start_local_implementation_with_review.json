@@ -1,0 +1,185 @@
+{
+    
+    "impl_review_prompt_2": "prompts/tasks/ts/ImplWithBaseReview_contd.md",
+    "impl_task_2":"prompts/tasks/ts/ImplWithBase_task_contd.md",
+    "checklist_path":"prompts/checklists/",
+    "checklists":{"docker":"docker.md", "models":"mongoosemodels.md", "auth": "security.md", "integration tests":"testing.md", "business logic": "logic.md"},
+    "repo_obj":{},
+    "start_local_implementation_with_review":[
+    {
+        "get-variables-from-parent": "artifact_paths,artifacts, model"
+    },
+    {
+        "copy-variables-between-objects": "step, this, output, index, history_message"
+    },
+    {
+        "copy-variables-between-objects": "artifact_paths, this, main_output, dev_plan, developer_memory, local_path, full_repo_file, impl_task, impl_review_prompt"
+    },
+    
+    {
+        "concat": "current_increment_state, increment, index, .json"
+    },
+
+    {
+        "set-project-variable": "increments_file,main_output, current_increment_state"
+    },
+    
+    {
+        "read-repo-json-file": "dev_plan, dev_plan_content"
+    },
+    
+    {
+        "copy-variable-from-objects": "dev_plan_content, increments, this, plan"
+    },
+    {
+        "get-array-length": "plan, plan_length"
+    },
+    {
+        "read-repo-json-file": "developer_memory, memory"
+    },
+    {
+        "read-repo-json-file": "full_repo_file, full_repo"
+    },
+    {
+        "get-prompt-data": "implprompt, impl_task"
+    },
+    {
+        "update-message": "review, plan_length"
+    },
+    {
+        "update-message": "reflect, Implementing the Plan"
+    },
+    {
+        "update-message": "message, 🔥, history_message"
+    },
+    {
+        "set-prompt-variable": "implprompt,implprompt,fm_project_name, fm_project_name"
+    },
+    {
+        "set-prompt-variable": "implprompt,implprompt,fm_early_iterations, full_repo"
+    },
+    {
+        "set-project-object-variable": "plan_obj, index, plan"
+    },
+    {
+        "copy-variables-between-objects": "plan_obj, this, increment_title, content"
+    },
+    {
+        "skip-get-prompt-data-select": "checklist_impl, checklists, checklist_path, increment_title"
+    },
+    {
+        "update-message": "reflect, increment_title"
+    },
+    {
+        "set-prompt-variable": "implprompt,implprompt,fm_increment, plan_obj"
+    },
+    {
+        "skip-set-prompt-variable": "implprompt,implprompt,fm_guidelines, checklist_impl"
+    },
+    {
+        "call-llm-history": "role ,implprompt, last_output, memory"
+    },
+    {
+        "extract-json-from-string": "last_output,output_obj"
+    },
+    {
+        "copy-variables-between-objects": "output_obj, this, generated_files, pull_request_summary"
+    },
+    {
+        "obj-to-list-obj": "generated_files, project_files"
+    },
+    {
+        "start-loop": "project_files, push_dir_files, file_path, file_content, file_index, files_length, file_obj"
+    },
+    {
+        "write-repo-state": "local_path, repo_obj"
+    },
+    {
+        "get-prompt-data": "review_prompt, impl_review_prompt"
+    },
+    {
+        "set-prompt-variable": "review_prompt,review_prompt,fm_guidelines, checklist_impl"
+    },
+    {
+        "set-prompt-variable": "review_prompt,review_prompt,fm_increment, plan_obj"
+    },
+    {
+        "set-prompt-variable": "review_prompt,review_prompt,fm_changes, last_output"
+    },
+    {
+        "set-prompt-variable": "review_prompt,review_prompt,fm_project_name, fm_project_name"
+    },
+    {
+        "set-prompt-variable": "review_prompt,review_prompt,fm_early_iterations, full_repo"
+    },
+    {
+        "pop": "memory, 2"
+    },
+    {
+        "write-json-to-repo": "developer_memory,memory, persist devloper memory"
+    },
+    {
+        "update-message": "size, prompt_size"
+    },
+    {
+        "skip-push-element": "increments_list,last_output, this"
+    },
+  
+    {
+        "copy-variable-from-objects": "this, index, artifact_paths, plan_index"
+    },
+    {
+        "increment-index": "index"
+    },
+    {
+        "concat": "current_repo_state, repo_state_string, index, .json"
+    },
+    {
+        "concat": "current_increment_state, increment, index, .json"
+    },
+    {
+        "set-project-variable": "repo_state,main_output, current_repo_state"
+    },
+    {
+        "set-project-variable": "increments_file,main_output, current_increment_state"
+    },
+    {
+        "write-json-to-repo": "repo_state,repo_obj, update repo state"
+    },
+    {
+        "skip-write-json-to-repo": "increments_file,increments_list, all increments"
+    },
+    {
+        "write-json-to-repo": "full_repo_file,full_repo, the chanaged added to the repo"
+    },
+    {
+        "push-element": "output,increments_file"
+    },
+    {
+        "copy-variable-from-objects": "this, impl_task_2, artifact_paths,impl_task"
+    },
+    {
+        "copy-variable-from-objects": "this, impl_review_prompt_2, artifact_paths,impl_review_prompt"
+    },
+    {
+        "copy-variables-between-objects": "this, artifact_paths,repo_state, increments_file, review_prompt, plan_length, full_repo_file"
+    },
+    {
+        "copy-variables-between-objects": "this, step,index,history_message "
+    },
+    {
+        "update-workflow-steps": "step, artifact_paths, artifacts"
+    }
+],
+"push_dir_files":[
+    {
+        "copy-variables-between-objects": "file_content, this, description, content"
+    },
+    {
+        "set-object-key-attributes": "repo_obj, file_path, content"
+    },
+    {
+        "set-object-key-attributes": "full_repo, file_path, content"
+    }
+]
+}

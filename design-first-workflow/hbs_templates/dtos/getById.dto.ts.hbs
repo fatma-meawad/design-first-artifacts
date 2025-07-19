@@ -1,0 +1,23 @@
+import { type ValidationType, ZERO, AppError } from '../../../../core';
+import { type CoreDto } from '../../../shared';
+
+export class Get{{name}}ByIdDto implements CoreDto<Get{{name}}ByIdDto> {
+  private constructor(public readonly id: {{idType}}) {
+    this.validate(this);
+  }
+
+  public validate(dto: Get{{name}}ByIdDto): void {
+    const errors: ValidationType[] = [];
+    const { id } = dto;
+
+    if (!id || isNaN(Number(id))) {
+      errors.push({ fields: ['id'], constraint: 'Id is not valid' });
+    }
+
+    if (errors.length > ZERO) throw AppError.badRequest('Error validating get {{nameLower}} by id', errors);
+  }
+
+  public static create(object: Record<string, unknown>): Get{{name}}ByIdDto {
+    return new Get{{name}}ByIdDto(object.id as {{idType}});
+  }
+}

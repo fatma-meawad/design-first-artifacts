@@ -1,0 +1,23 @@
+import { AppError } from '../../../../core';
+
+export class {{name}}Entity {
+  constructor(
+    {{#each attributes}}
+    public {{name}}: {{type}}{{#if default}} = {{default}}{{/if}},
+    {{/each}}
+  ) {}
+
+  static fromJson(obj: Record<string, unknown>): {{name}}Entity {
+    {{#each attributes}}
+    {{#if required}}
+    if (!obj.{{name}}) throw new AppError('Missing required field: {{name}}');
+    {{/if}}
+    {{/each}}
+    
+    return new {{name}}Entity(
+      {{#each attributes}}
+      obj.{{name}} as {{type}}{{#unless @last}},{{/unless}}
+      {{/each}}
+    );
+  }
+}

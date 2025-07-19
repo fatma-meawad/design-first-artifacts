@@ -1,0 +1,92 @@
+{
+    "components_prompt": "prompts/openapi/OpenAPIComponents.md",
+    "extract_api_components": [
+        {
+            "get-variables-from-parent": "artifact_paths,artifacts,  model"
+        },
+        {
+            "copy-variables-between-objects": "artifact_paths, this, main_output, fm_domain_model, fm_backlog_path, fm_product_design"
+        },
+        {
+            "copy-variables-between-objects": "step, this, output"
+        },
+        {
+            "update-message": "message, Extracting Schema Components"
+        },
+        {
+            "update-card-fields": "model"
+        },
+        {
+            "assign-user": "model"
+        },
+        {
+            "get-prompt-data": "role, system_prompt"
+        },
+        {
+            "get-prompt-data": "prompt, components_prompt"
+        },
+        {
+            "set-project-variable": "fm_components_path,main_output, components"
+        },
+        {
+            "set-project-variable": "be_history,main_output, backend_history"
+        },
+        {
+            "read-repo-json-file": "fm_product_design, fm_product_design_content"
+        },
+        {
+            "read-repo-json-file": "fm_domain_model, fm_domain_model_content"
+        },
+        {
+            "read-repo-json-file": "fm_backlog_path, fm_userstories"
+        },
+        {
+            "set-prompt-variable": "prompt, prompt, fm_product_design,  fm_product_design_content"
+        },
+        {
+            "set-prompt-variable": "prompt, prompt, fm_domain_model,  fm_domain_model_content"
+        },
+        {
+            "set-prompt-variable": "prompt, prompt, fm_userstories,  fm_userstories"
+        },
+        {
+            "set-prompt-variable": "prompt, prompt, fm_project_name, fm_project_name"
+        },
+        {
+            "update-message": "message, 🔥, history_message"
+        },
+        {
+            "call-llm-history": "role, prompt, last_output, history"
+        },
+        {
+            "create-output-comment": "last_output, +1"
+        },
+        {
+            "update-message": "size, prompt_size"
+        },
+        {
+            "write-json-to-repo": "fm_components_path, last_output, list of components"
+        },
+        {
+            "write-json-to-repo": "be_history, history, components schema"
+        },
+        {
+            "push-element": "output,fm_components_path"
+        },
+        {
+            "push-element": "output,be_history"
+        },
+        {
+            "copy-variable-from-objects": "this, output, step, output"
+        },
+        {
+            "copy-variable-from-objects": "this, artifact_description, artifacts, fm_components_path"
+        },
+        {
+            "copy-variables-between-objects": "this, artifact_paths, fm_components_path, be_history"
+        },
+        {
+            "update-workflow-steps": "step, artifact_paths, artifacts"
+        }
+    ]
+}

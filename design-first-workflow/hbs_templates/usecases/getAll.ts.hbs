@@ -1,0 +1,15 @@
+import { type PaginationDto, type PaginationResponseEntity } from '../../../shared';
+import { type {{name}}Entity } from '../entities';
+import { type {{name}}Repository } from '../repositories/respository';
+
+export interface Get{{pluralize name}}UseCase {
+  execute: (pagination: PaginationDto) => Promise<PaginationResponseEntity<{{name}}Entity[]>>;
+}
+
+export class Get{{pluralize name}} implements Get{{pluralize name}}UseCase {
+  constructor(private readonly repository: {{name}}Repository) {}
+
+  async execute(pagination: PaginationDto): Promise<PaginationResponseEntity<{{name}}Entity[]>> {
+    return await this.repository.getAll(pagination);
+  }
+}

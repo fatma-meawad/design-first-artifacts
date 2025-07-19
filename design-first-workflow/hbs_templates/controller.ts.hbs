@@ -1,0 +1,108 @@
+import { type NextFunction, type Request, type Response } from 'express';
+
+import { type SuccessResponse, HttpCode, ONE, TEN } from '../../../core';
+import { PaginationDto, type PaginationResponseEntity } from '../../shared';
+
+import {
+  {{#each useCases}}
+  {{this}},
+  {{/each}}
+  {{#each dtos}}
+  {{this}},
+  {{/each}}
+  type {{name}}Entity,
+  type {{name}}Repository
+} from '../domain';
+
+interface Params {
+  id: string;
+}
+
+{{#if hasBody}}
+interface RequestBody {
+  {{#each bodyProperties}}
+  {{name}}{{#unless required}}?{{/unless}}: {{type}};
+  {{/each}}
+}
+{{/if}}
+
+{{#if hasQuery}}
+interface RequestQuery {
+  {{#each queryProperties}}
+  {{name}}{{#unless required}}?{{/unless}}: string;
+  {{/each}}
+}
+{{/if}}
+
+export class {{name}}Controller {
+  //* Dependency injection
+  constructor(private readonly repository: {{name}}Repository) {}
+
+  {{#if hasGetAll}}
+  public getAll = (
+    req: Request<unknown, unknown, unknown, RequestQuery>,
+    res: Response<SuccessResponse<PaginationResponseEntity<{{name}}Entity[]>>>,
+    next: NextFunction
+  ): void => {
+    const { page = ONE, limit = TEN } = req.query;
+    const paginationDto = PaginationDto.create({ page: +page, limit: +limit });
+    new Get{{pluralize name}}s(this.repository)
+      .execute(paginationDto)
+      .then((result) => res.json({ data: result }))
+      .catch((error) => {
+        next(error);
+      });
+  };
+  {{/if}}
+
+  {{#if hasGetById}}
+  public getById = (req: Request<Params>, res: Response<SuccessResponse<{{name}}Entity>>, next: NextFunction): void => {
+    const { id } = req.params;
+    const getByIdDto = Get{{name}}ByIdDto.create({ id: Number(id) });
+    new Get{{name}}ById(this.repository)
+      .execute(getByIdDto)
+      .then((result) => res.json({ data: result }))
+      .catch(next);
+  };
+  {{/if}}
+
+  {{#if hasCreate}}
+  public create = (
+    req: Request<unknown, unknown, RequestBody>,
+    res: Response<SuccessResponse<{{name}}Entity>>,
+    next: NextFunction
+  ): void => {
+    const createDto = Create{{name}}Dto.create(req.body);
+    new Create{{name}}(this.repository)
+      .execute(createDto)
+      .then((result) => res.status(HttpCode.CREATED).json({ data: result }))
+      .catch(next);
+  };
+  {{/if}}
+
+  {{#if hasUpdate}}
+  public update = (
+    req: Request<Params, unknown, RequestBody>,
+    res: Response<SuccessResponse<{{name}}Entity>>,
+    next: NextFunction
+  ): void => {
+    const { id } = req.params;
+    const updateDto = Update{{name}}Dto.create({ id: Number(id), ...req.body });
+    new Update{{name}}(this.repository)
+      .execute(updateDto)
+      .then((result) => res.json({ data: result }))
+      .catch(next);
+  };
+  {{/if}}
+
+  {{#if hasDelete}}
+  public delete = (req: Request<Params>, res: Response<SuccessResponse<{{name}}Entity>>, next: NextFunction): void => {
+    const { id } = req.params;
+    const getByIdDto = Get{{name}}ByIdDto.create({ id: Number(id) });
+    new Delete{{name}}(this.repository)
+      .execute(getByIdDto)
+      .then((result) => res.json({ data: result }))
+      .catch(next);
+  };
+  {{/if}}
+}

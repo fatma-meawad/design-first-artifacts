@@ -1,0 +1,110 @@
+{
+    "loop_options":["check"],
+    "repo_review_prompt": "prompts/tasks/ts/BackendDevRepoReview.md",
+    "fixes":[],
+    "validate_repo_commands": [
+        {
+            "get-variables-from-parent": "artifact_paths,artifacts,  model"
+        },
+        {
+            "copy-variables-between-objects": "artifact_paths, this, main_output,  techlead_memory, full_repo_file,  local_path"
+        },
+        {
+            "copy-variables-between-objects": "step, this, output"
+        },
+        {
+            "set-project-variable": "repo_state,main_output, repo_state0.json"
+        },
+        {
+            "set-project-variable": "fixes_file,main_output, validation_fixes"
+        },
+        {
+            "read-repo-json-file": "techlead_memory, lead_memory"
+        },
+        {
+            "pop": "lead_memory,1"
+        },
+        {
+            "read-repo-json-file": "repo_state, origin_repo"
+        },
+        {
+            "read-repo-json-file": "full_repo_file, full_repo"
+        },
+        {
+            "combine-output-objects": "origin_repo, full_repo"
+        },
+        {
+            "run-validation-commands": "local_path, docker_output,  loop_options"
+        },
+        {
+            "start-loop": "loop_options, validate_repo_loop, key, value, index, length, obj"
+        },
+        {
+            "copy-variable-from-objects": "this, output, step, output"
+        },
+        {
+            "write-json-to-repo": "fixes_file,fixes, all fixes required"
+        },
+        {
+            "write-json-to-repo": "full_repo_file,origin_repo, the updated repo"
+        },
+        {
+            "copy-variables-between-objects": "this, artifact_paths, fixes_file"
+        },
+        {
+            "update-workflow-steps": "step, artifact_paths, artifacts"
+        }
+    ],
+    "validate_repo_loop": [
+        {
+            "get-prompt-data": "userdata, repo_review_prompt"
+        },
+        {
+            "set-prompt-variable": "userdata, userdata, fm_repository_state, origin_repo"
+        },
+        {
+            "set-prompt-variable": "userdata, userdata, fm_project_name, fm_project_name"
+        },
+        {
+            "set-prompt-variable": "userdata, userdata, fm_errors, docker_output"
+        },
+        {
+            "call-llm-history": ",userdata, last_output, lead_memory"
+        },
+        {
+            "pop": "lead_memory, 2"
+        },
+        {
+            "extract-json-from-string": "last_output,output_obj"
+        },
+        {
+            "push-element": "fixes, output_obj, this"
+        },
+        {
+            "copy-variable-from-objects": "output_obj, generated_corrected_files, this, generated_files"
+        },
+        {
+            "obj-to-list-obj": "generated_files, project_files"
+        },
+        {
+            "start-loop": "project_files, push_dir_files, file_path, file_content, file_index, files_length, file_obj"
+        },
+        {
+            "write-repo-state": "local_path,origin_repo"
+        },
+        {
+            "update-message": "size, prompt_size"
+        },
+        {
+            "run-validation-commands": "local_path, docker_output, loop_options"
+        }
+    ],
+    "push_dir_files": [
+        {
+            "copy-variables-between-objects": "file_content, this, description, content"
+        },
+        {
+            "set-object-key-attributes": "origin_repo, file_path, content"
+        }
+    ]
+}

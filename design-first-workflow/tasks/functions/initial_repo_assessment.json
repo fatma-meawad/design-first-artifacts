@@ -1,0 +1,78 @@
+{
+
+    "lead_role": "objects/roles/TechLeadSystem.md",
+    "local_path": "main_output",
+    "task": "prompts/tasks/ts/AssessRepoStateTask.md",
+    "lead_memory": [],
+    "initial_repo_assessment": [
+        {
+            "get-variables-from-parent": "artifact_paths,artifacts, model"
+        },
+        {
+            "copy-variables-between-objects": "artifact_paths, this, main_output, main_memory, local_path"
+        },
+        {
+            "copy-variables-between-objects": "step, this, output"
+        },
+        {
+            "set-project-variable": "repo_state,main_output, repo_state0.json"
+        },
+        {
+            "set-project-variable": "techlead_memory,main_memory, tech_lead_memory"
+        },
+       
+        {
+            "get-prompt-data": "lead_role_prompt, lead_role"
+        },
+        {
+            "get-prompt-data": "lead_goal, task"
+        },
+        {
+            "set-project-variable": "repo_assess_file,main_output, full_assess"
+        },
+        {
+            "read-repo-json-file": "repo_state, fm_repo_state"
+        },
+        {
+            "set-prompt-variable": "lead_goal, lead_goal, fm_repo_state, fm_repo_state"
+        },
+        {
+            "set-prompt-variable": "lead_goal, lead_goal, fm_project_name, fm_project_name"
+        },
+        {
+            "update-message": "message, Creating Project Assessment 🔥, history_message"
+        },
+        
+        {
+            "push": "lead_memory, system, lead_role_prompt"
+        },
+        {
+            "push": "lead_memory, user, lead_goal"
+        },
+        {
+            "call-llm-history": ",lead_prompt, last_output, lead_memory"
+        },
+        
+
+        {
+            "write-json-to-repo": "techlead_memory,lead_memory, updating technical lead memory"
+        },
+        {
+            "write-json-to-repo": "repo_assess_file,last_output, assessment"
+        },
+    
+        {
+            "update-message": "size, prompt_size"
+        },
+      
+        {
+            "copy-variable-from-objects": "this, output, step, output"
+        },
+        {
+            "copy-variables-between-objects": "this, artifact_paths, techlead_memory, local_path,repo_assess_file "
+        },
+        {
+            "update-workflow-steps": "step, artifact_paths, artifacts"
+        }
+    ]
+}

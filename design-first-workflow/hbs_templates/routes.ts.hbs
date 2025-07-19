@@ -1,0 +1,45 @@
+import { Router } from 'express';
+
+import { {{name}}DatasourceImpl, {{name}}RepositoryImpl } from '../infraestructure';
+import { {{name}}Controller } from './controller';
+import { AuthDatasourceImpl, AuthMiddleware, AuthRepositoryImpl } from '../../auth';
+
+export class {{name}}Routes {
+  static get routes(): Router {
+    const router = Router();
+
+    // This datasource can be changed
+    const datasource = new {{name}}DatasourceImpl();
+    const repository = new {{name}}RepositoryImpl(datasource);
+    const controller = new {{name}}Controller(repository);
+
+    // Authentication middleware
+    const authDatasource = new AuthDatasourceImpl();
+    const authRepository = new AuthRepositoryImpl(authDatasource);
+    const authMiddleware = new AuthMiddleware(authRepository);
+
+    {{#each endpoints}}
+    {{#if (eq @key 'get')}}
+    {{#if (contains this 'id')}}
+    router.get('/:id', controller.getById);
+    {{else}}
+    router.get('/', controller.getAll);
+    {{/if}}
+    {{/if}}
+    {{#if (eq @key 'post')}}
+    router.post('/', [authMiddleware.validateJWT], controller.create);
+    {{/if}}
+    {{#if (eq @key 'put')}}
+    router.put('/:id', controller.update);
+    {{/if}}
+    {{#if (eq @key 'delete')}}
+    router.delete('/:id', controller.delete);
+    {{/if}}
+    {{/each}}
+
+    // rest of operations
+    // ...
+
+    return router;
+  }
+}

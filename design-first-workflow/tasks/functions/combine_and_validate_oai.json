@@ -1,0 +1,72 @@
+{  "combine_and_validate_oai": [
+    {
+        "get-variables-from-parent": "artifact_paths,artifacts,  model, open_api_template, client_repo"
+    },
+    {
+        "copy-variables-between-objects": "artifact_paths, this, main_output, fm_endpoints_path, fm_components_path, be_history"
+    },
+    {
+        "copy-variables-between-objects": "step, this, output"
+    },
+    {
+        "read-repo-json-file": "be_history, history"
+    },
+    {
+        "read-repo-json-file": "fm_endpoints_path, fm_endpoints_content"
+    },
+    {
+        "get-prompt-data": "fm_oai_content, open_api_template"
+    },
+    {
+        "set-project-variable": "openapi_path,main_output, openapi"
+    },
+    {
+        "read-repo-json-file": "fm_components_path, fm_comp_content"
+    },
+    {
+        "set-prompt-variable": "fm_oai_content, fm_oai_content, fm_project_name, fm_project_name"
+    },
+    {
+        "extract-json-from-string": "fm_oai_content, spec_obj "
+    },
+    {
+        "copy-variables-between-objects": "fm_comp_content, this, components, tags"
+    },
+    {
+        "copy-variables-between-objects": "this, spec_obj, components, tags"
+    },
+    {
+        "copy-variable-from-objects": "this, fm_endpoints_content, spec_obj, paths"
+    },
+    {
+        "write-file-local": "openapi.json, spec_obj"
+    },
+    {
+        "validate-specs": "openapi.json, output_lint, loop_options"
+    },
+    {
+        "start-loop": "loop_options, validate, key, value, index, length, obj"
+    },
+    {
+        "write-json-to-repo": "openapi_path, spec_obj, final specification document"
+    },
+    {
+        "push-file-to-branch-in-repo": "owner, client_repo, main_branch, openapi.json, spec_obj, output_lint"
+    },
+    {
+        "push-element": "output,openapi_path"
+    },
+    {
+        "copy-variable-from-objects": "this, output, step, output"
+    },
+    {
+        "copy-variable-from-objects": "this, openapi_description, artifacts, openapi_path"
+    },
+    {
+        "copy-variables-between-objects": "this, artifact_paths, openapi_path"
+    },
+    {
+        "update-workflow-steps": "step, artifact_paths, artifacts"
+    }
+]
+}

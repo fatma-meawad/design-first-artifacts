@@ -1,0 +1,13 @@
+// src\features\{{nameLower}}\domain\repositories\respository.ts
+
+import { type PaginationDto, type PaginationResponseEntity } from '../../../shared';
+import { {{#each dtoTypes}}type {{this}}{{#unless @last}}, {{/unless}}{{/each}} } from '../dtos';
+import { type {{name}}Entity } from '../entities';
+
+export abstract class {{name}}Repository {
+	abstract create(createDto: Create{{name}}Dto): Promise<{{name}}Entity>;
+	abstract getAll(pagination: PaginationDto): Promise<PaginationResponseEntity<{{name}}Entity[]>>;
+	abstract getById(getByIdDto: Get{{name}}ByIdDto): Promise<{{name}}Entity>;
+	abstract update(updateDto: Update{{name}}Dto): Promise<{{name}}Entity>;
+	abstract delete(getByIdDto: Get{{name}}ByIdDto): Promise<{{name}}Entity>;
+}

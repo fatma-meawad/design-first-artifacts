@@ -1,0 +1,15 @@
+import { type Get{{name}}ByIdDto } from '../dtos';
+import { type {{name}}Entity } from '../entities';
+import { type {{name}}Repository } from '../repositories/respository';
+
+export interface Get{{name}}ByIdUseCase {
+  execute: (getByIdDto: Get{{name}}ByIdDto) => Promise<{{name}}Entity>;
+}
+
+export class Get{{name}}ById implements Get{{name}}ByIdUseCase {
+  constructor(private readonly repository: {{name}}Repository) {}
+
+  async execute(getByIdDto: Get{{name}}ByIdDto): Promise<{{name}}Entity> {
+    return await this.repository.getById(getByIdDto);
+  }
+}

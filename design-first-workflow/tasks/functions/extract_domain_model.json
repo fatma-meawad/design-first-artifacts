@@ -1,0 +1,61 @@
+{
+    
+    "dm_prompt": "prompts/product/DMSystem.md",
+    "extract_domain_model":[
+
+    {
+        "get-variables-from-parent": "artifact_paths,artifacts,  model"
+    },
+    {
+        "copy-variables-between-objects": "artifact_paths, this, main_output, po_history"
+    },
+    {
+        "copy-variables-between-objects": "step, this, output"
+    },
+    {
+        "set-project-variable": "fm_domain_model,main_output, domain_model"
+    },
+    {
+        "read-repo-json-file": "po_history, history"
+    },
+    {
+        "get-prompt-data": "prompt, dm_prompt"
+    },
+    {
+        "update-message": "message, 🔥, history_message"
+    },
+    {
+        "call-llm-history": ", prompt, last_output, history"
+    },
+    {
+        "create-output-comment": "last_output, +1"
+    },
+    {
+        "update-message": "size, prompt_size"
+    },
+    {
+        "write-json-to-repo": "fm_domain_model, last_output, domain model"
+    },
+    {
+        "write-json-to-repo": "po_history, history, with domain models"
+    },
+    {
+        "push-element": "output,fm_domain_model"
+    },
+    {
+        "copy-variable-from-objects": "this, output, step, output"
+    },
+    {
+        "copy-variable-from-objects": "this, model_description, artifacts, fm_domain_model"
+    },
+    {
+        "copy-variables-between-objects": "this, artifact_paths, fm_domain_model, po_history"
+    },
+    {
+        "update-issue-status-metadata": "Todo"
+    },
+    {
+        "update-workflow-steps": "step, artifact_paths, artifacts"
+    }
+]
+}

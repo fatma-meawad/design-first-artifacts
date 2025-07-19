@@ -1,0 +1,13 @@
+import { {{name}}Entity } from '../entities';
+import { Create{{name}}Dto } from '../dtos';
+
+export interface {{name}}Repository {
+  create(dto: Create{{name}}Dto): Promise<{{name}}Entity>;
+  getById(id: {{#each attributes}}{{#if (eq name 'id')}}{{type}}{{/if}}{{/each}}): Promise<{{name}}Entity>;
+  getAll(): Promise<{{name}}Entity[]>;
+  update(
+    id: {{#each attributes}}{{#if (eq name 'id')}}{{type}}{{/if}}{{/each}}, 
+    changes: Partial<Create{{name}}Dto>
+  ): Promise<{{name}}Entity>;
+  delete(id: {{#each attributes}}{{#if (eq name 'id')}}{{type}}{{/if}}{{/each}}): Promise<{{name}}Entity>;
+}

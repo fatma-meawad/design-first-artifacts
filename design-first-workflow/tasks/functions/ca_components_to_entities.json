@@ -1,0 +1,111 @@
+{
+    "component_to_entities": "prompts/tasks/ca/ComponentToEntities.md",
+    "entities_to_dtos": "prompts/tasks/ca/ComponentToDTOs.md",
+    "fm_stack":"Node.js/Express/TypeScript",
+    "lead_role": "objects/roles/TechLeadSystem.md",
+    "component_to_entities_goal": "prompts/tasks/ca/ComponentToEntityGoal.md",
+    "full_repo": {},
+    "lead_memory": [],
+    "ca_components_to_entities": [
+        {
+            "get-variables-from-parent": "artifact_paths,artifacts, model"
+        },
+        {
+            "copy-variables-between-objects": "artifact_paths, this, main_output, main_memory, openapi_path, local_path"
+        },
+        {
+            "copy-variables-between-objects": "step, this, output"
+        },
+        {
+            "set-project-variable": "techlead_memory,main_memory, tech_lead_memory"
+        },
+        {
+            "set-project-variable": "full_repo_file,main_output, full_repo"
+        },
+        {
+            "get-prompt-data": "lead_role_prompt, lead_role"
+        },
+        {
+            "get-prompt-data": "task_prompt, component_to_entities_goal"
+        },
+        {
+            "get-prompt-data": "task_prompt_entity, component_to_entities"
+        },
+        {
+            "get-prompt-data": "task_prompt_dto, entities_to_dtos"
+        },
+        {
+            "read-repo-json-file": "openapi_path, fm_openapi"
+        },
+        {
+            "set-prompt-variable": "task_prompt, task_prompt, fm_stack, fm_stack"
+        },
+        {
+            "set-prompt-variable": "task_prompt, task_prompt, fm_project_name, fm_project_name"
+        },
+        {
+            "set-prompt-variable": "task_prompt, task_prompt, fm_openapi_specs,fm_openapi"
+        },
+    
+        {
+            "update-message": "message, Creating Component types 🔥, history_message"
+        },
+        {
+            "push": "lead_memory, system, lead_role_prompt"
+        },
+        {
+            "push": "lead_memory, user, task_prompt"
+        },
+        {
+            "call-llm-history": ",task_prompt_entity, last_output, lead_memory"
+        },
+       
+        {
+            "extract-json-from-string": "last_output,output_obj"
+        },
+        {
+            "copy-variables-between-objects": "output_obj, this, generated_files, general_notes"
+        },
+        {
+            "combine-output-objects": "full_repo, generated_files"
+        },
+        {
+            "reset-object-variable": "output_obj, general_notes"
+        },
+    
+        {
+            "call-llm-history": ",task_prompt_dto, last_output, lead_memory"
+        },
+        {
+            "extract-json-from-string": "last_output,output_obj"
+        },
+        {
+            "copy-variables-between-objects": "output_obj, this, generated_files, general_notes"
+        },
+        {
+            "combine-output-objects": "full_repo, generated_files"
+        },
+
+        {
+            "write-json-to-repo": "techlead_memory,lead_memory, lead memory"
+        },
+        {
+            "write-json-to-repo": "full_repo_file,  generated_files, general_notes"
+        },
+        {
+            "write-repo-state": "local_path, full_repo"
+        },
+        {
+            "update-message": "size, prompt_size"
+        },
+        {
+            "copy-variable-from-objects": "this, output, step, output"
+        },
+        {
+            "copy-variables-between-objects": "this, artifact_paths,  techlead_memory,full_repo_file"
+        },
+        {
+            "update-workflow-steps": "step, artifact_paths, artifacts"
+        }
+    ]
+}

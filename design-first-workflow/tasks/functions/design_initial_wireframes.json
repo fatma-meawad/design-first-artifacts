@@ -1,0 +1,81 @@
+{
+    "system_prompt": "objects/roles/ProductDesignerSystem.md",
+    "user_prompt": "prompts/product/DesignerUser.md",
+    "design_initial_wireframes": [
+        {
+            "get-variables-from-parent": "artifact_paths,artifacts,  model, fm_project_name"
+        },
+        {
+            "copy-variables-between-objects": "artifact_paths, this, main_output, fm_requirements"
+        },
+        {
+            "copy-variables-between-objects": "step, this, output"
+        },
+        {
+            "update-message": "message, Extracting Initial Design"
+        },
+        {
+            "update-card-fields": "model"
+        },
+        {
+            "assign-user": "model"
+        },
+        {
+            "get-prompt-data": "role, system_prompt"
+        },
+        {
+            "get-prompt-data": "prompt, user_prompt"
+        },
+        {
+            "set-prompt-variable": "role, role, fm_project_name, fm_project_name"
+        },
+        {
+            "set-project-variable": "fm_product_design,main_output, design"
+        },
+        {
+            "set-project-variable": "designer_history,fm_product_design, history"
+        },
+        {
+            "read-file": "fm_requirements, fm_requirements_content"
+        },
+        {
+            "set-prompt-variable": "prompt, prompt, fm_requirements,  fm_requirements_content"
+        },
+        {
+            "update-message": "message, 🔥, history_message"
+        },
+        {
+            "call-llm-history": "role, prompt, last_output, history"
+        },
+        {
+            "create-output-comment": "last_output, +1"
+        },
+        {
+            "update-message": "size, prompt_size"
+        },
+        {
+            "write-json-to-repo": "fm_product_design, last_output, wireflow"
+        },
+        {
+            "write-json-to-repo": "designer_history, history, history"
+        },
+        {
+            "push-element": "output,fm_product_design"
+        },
+        {
+            "push-element": "output,designer_history"
+        },
+        {
+            "copy-variable-from-objects": "this, output, step, output"
+        },
+        {
+            "copy-variable-from-objects": "this, artifact_description, artifacts, fm_product_design"   
+        },
+        {
+            "copy-variables-between-objects": "this, artifact_paths, fm_product_design, designer_history"
+        },
+        {
+            "update-workflow-steps": "step, artifact_paths, artifacts"
+        }
+    ]
+}

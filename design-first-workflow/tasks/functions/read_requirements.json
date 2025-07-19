@@ -1,0 +1,48 @@
+{
+    "split_factor": "----",
+  "compress_size": 1,
+  "artifact_description": "raw text of informal requirements coming directly from the clients",
+  "read_requirements": [
+    {
+      "get-variables-from-parent": "artifact_paths, artifacts, model, path, base_path, output_path, current_input_folder"
+    },
+    {
+      "set-project-path-variable": "path, base_path, current_input_folder"
+    },
+    {
+      "get-folder-files": "path, output_files, txt"
+    },
+    {
+      "start-loop": "output_files, loop_functions, loop_item, loop_value, loop_item_index, loop_length, loop_object"
+    },
+    {
+      "set-project-path-variable": "main_output, base_project_folder, output_path, model, loop_item"
+    },
+    {
+      "copy-variable-from-objects": "this, main_output, artifact_paths, main_output"
+    },
+    {
+      "copy-variables-between-objects": "step, this, output"
+    },
+    {
+      "push-element": "output,main_output"
+    },
+    {
+      "push-element": "output,fm_requirements"
+    },
+    {
+      "copy-variable-from-objects": "this, output, step, output"
+    },
+    {
+      "copy-variable-from-objects": "this, artifact_description, artifacts, fm_requirements"
+    },
+    {
+      "update-workflow-steps": "step, artifact_paths, artifacts"
+    }
+  ],
+  "loop_functions": [
+    {
+      "copy-variable-from-objects": "this, loop_value, artifact_paths, fm_requirements"
+    }
+  ]
+}

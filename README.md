@@ -16,7 +16,7 @@ This repository (`design-first-artifacts/design-first-workflow`) contains exampl
 
 3. **`repo_objects/`**  
    - JSON files representing code bases generated out of the three different strategies.
-   - 
+     
 4. **`roles/`**  
    - Define System prompts for different roles
      

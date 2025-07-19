@@ -1,0 +1,159 @@
+{
+  "components": {
+    "schemas": {
+      "Badge": {
+        "type": "object",
+        "required": ["title", "description", "points", "createdBy"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the badge",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the badge",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the badge",
+            "minLength": 3,
+            "maxLength": 300
+          },
+          "points": {
+            "type": "integer",
+            "description": "Points associated with the badge",
+            "minimum": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Creation date of the badge",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "User who created the badge",
+            "format": "uuid"
+          },
+          "modifiedBy": {
+            "type": "string",
+            "description": "User who last modified the badge",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "description": "Last modification date of the badge",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "images": {
+            "type": "array",
+            "description": "Images associated with the badge",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "required": ["url"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the image",
+            "format": "uri"
+          },
+          "file": {
+            "type": "string",
+            "description": "File representation of the image",
+            "format": "binary",
+            "writeOnly": true
+          },
+          "size": {
+            "type": "integer",
+            "description": "Size of the image file in bytes",
+            "maximum": 5242880
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": ["name", "email"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the user",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the user",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "description": "Email of the user",
+            "format": "email"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Error code",
+            "minimum": 400,
+            "maximum": 599
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://example.com/oauth/authorize",
+            "scopes": {
+              "write:badges": "modify badges",
+              "read:badges": "read badges"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Badges",
+      "description": "Operations related to badges"
+    },
+    {
+      "name": "Users",
+      "description": "Operations related to users"
+    },
+    {
+      "name": "Images",
+      "description": "Operations related to images"
+    }
+  ],
+  "general_notes": [
+    "The Badge schema includes fields for tracking creation and modification, inferred from the requirement to track creation and modification dates.",
+    "The Image schema includes validation for file size, as implied by the user stories.",
+    "The User schema is simplified to include only the fields mentioned in the user stories.",
+    "The Error schema is a generic error response that can be reused across operations.",
+    "The security scheme is defined as OAuth2, supporting both Gmail and GitHub login options as per the user stories."
+  ]
+}

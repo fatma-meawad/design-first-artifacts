@@ -1,0 +1,28 @@
+{
+  "increment_title": "Setup and configuration",
+  "increment_summary_description": "Initial project setup including package.json, basic server configuration, and environment setup.",
+  "openapi_elements": "N/A",
+  "target_files": [
+    {
+      "server/package.json": "Project metadata, run, build and test scripts, and dependencies."
+    },
+    {
+      "server/src/index.js": "Entrypoint. Gets the app instance and launches servers."
+    },
+    {
+      "server/src/app.js": "Sets up Express app, middleware, routing, express-openapi-validator and swagger-UI for hosting the OpenAPI document."
+    },
+    {
+      "server/readme.md": "Documentation of what this repository is about, what it contains and how to run all its commands, and continue development in it."
+    },
+    {
+      ".gitignore": "List files and folder to be ignored by git."
+    },
+    {
+      "server/src/.env-example": "All environment variables needed for the project."
+    }
+  ],
+  "validation_commands": [
+    "npm start"
+  ]
+}

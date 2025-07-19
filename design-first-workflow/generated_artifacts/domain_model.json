@@ -1,0 +1,11 @@
+{
+  "mermaid_content": "classDiagram\n    class Badge {\n        +string title\n        +string description\n        +integer points\n        +datetime createdAt\n        +User createdBy\n        +User modifiedBy\n        +datetime modifiedAt\n        +addImage()\n        +removeImage()\n        +updatePoints()\n    }\n    class User {\n        +string id\n        +string name\n        +string email\n        +login()\n        +logout()\n    }\n    class Image {\n        +string url\n        +file file\n        +integer size\n        +validateUrl()\n        +validateFileSize()\n    }\n    Badge \"1\" *-- \"0..*\" Image : has\n    User \"1\" *-- \"0..*\" Badge : creates\n    User \"1\" *-- \"0..*\" Badge : modifies",
+  "general_notes": [
+    "The domain model assumes that a User can create and modify multiple Badges, and a Badge can have multiple Images.",
+    "The Image class includes methods for validating URLs and file sizes, as implied by the user stories.",
+    "The createdAt and modifiedAt attributes in the Badge class are inferred from the requirement to track creation and modification dates.",
+    "The relationship between User and Badge is modeled to reflect that a User can create and modify Badges, but the stories do not specify deletion, so it's not included in the model.",
+    "The points attribute in the Badge class is included based on the requirement to add/edit/delete points for each badge and to sort the list by points.",
+    "The general_notes attribute is used to communicate assumptions and important considerations to the developer."
+  ]
+}

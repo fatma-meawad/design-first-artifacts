@@ -1,0 +1,88 @@
+{
+    "user-stories": [
+        {
+            "id": "US-001",
+            "short_title": "Create Badge",
+            "user_story": "As a logged-in user, I want to create a new badge with a unique title, description, points, and optional images, so that I can recognize achievements.",
+            "priority": "Must Have",
+            "success_scenarios": [
+                "Given I am logged in, When I enter a unique title, a description between 3 and 300 characters, points, and optionally add images via a valid URL or upload (up to 5MB), Then the badge is created and saved in the system with all validations passed."
+            ],
+            "failure_scenarios": [
+                "Given I am not logged in, When I try to create a badge, Then I am redirected to the login page.",
+                "Given I am logged in, When I enter a title that already exists, Then I receive an error message indicating the title must be unique.",
+                "Given I am logged in, When I enter a description less than 3 characters or more than 300 characters, Then I receive an error message indicating the description length is invalid.",
+                "Given I am logged in, When I upload an image larger than 5MB, Then I receive an error message indicating the file size limit is exceeded.",
+                "Given I am logged in, When I enter an invalid URL for the image, Then I receive an error message indicating the URL is invalid."
+            ]
+        },
+        {
+            "id": "US-002",
+            "short_title": "View Badge List",
+            "user_story": "As a user, I want to view a list of all badges with options to sort by points or creation date, so that I can easily find badges of interest.",
+            "priority": "Must Have",
+            "success_scenarios": [
+                "Given I am on the badge list page, When I view the list, Then I see all badges displayed with their titles, points, creation dates, and image previews.",
+                "Given I am on the badge list page, When I sort by points, Then the list is reordered by badge points.",
+                "Given I am on the badge list page, When I sort by creation date, Then the list is reordered by the last created badge."
+            ],
+            "failure_scenarios": [
+                "Given there are no badges in the system, When I view the badge list, Then I see a message indicating no badges are available.",
+                "Given a server error occurs, When I try to sort the badges, Then I receive an error message indicating the sorting could not be completed."
+            ]
+        },
+        {
+            "id": "US-003",
+            "short_title": "View Badge Details",
+            "user_story": "As a user, I want to view detailed information about a badge including all images in a gallery/slider, so that I can see all details of the badge.",
+            "priority": "Must Have",
+            "success_scenarios": [
+                "Given I am viewing a badge's details, When I click on an image, Then the image is enlarged in a modal or slider for better viewing."
+            ],
+            "failure_scenarios": [
+                "Given the badge has no images, When I view the badge details, Then I see a placeholder with text 'No images available' and a default image icon."
+            ]
+        },
+        {
+            "id": "US-004",
+            "short_title": "Edit Badge",
+            "user_story": "As the creator of a badge, I want to edit the badge's details, so that I can update the badge's information.",
+            "priority": "Must Have",
+            "success_scenarios": [
+                "Given I am the creator of a badge and logged in, When I edit the badge's title, description, points, or images and submit, Then the badge is updated with the new information."
+            ],
+            "failure_scenarios": [
+                "Given I am not the creator of the badge or not logged in, When I try to edit the badge, Then I do not see the edit option or receive an error message.",
+                "Given I am the creator of the badge and logged in, When I enter a title that already exists, Then I receive an error message indicating the title must be unique.",
+                "Given I am the creator of the badge and logged in, When I enter a description less than 3 characters or more than 300 characters, Then I receive an error message indicating the description length is invalid.",
+                "Given a server error occurs, When I try to update the badge, Then I receive an error message indicating the update could not be completed."
+            ]
+        },
+        {
+            "id": "US-005",
+            "short_title": "Delete Badge",
+            "user_story": "As the creator of a badge, I want to delete the badge, so that I can remove it from the system.",
+            "priority": "Must Have",
+            "success_scenarios": [
+                "Given I am the creator of a badge and logged in, When I delete the badge, Then the badge is removed from the system."
+            ],
+            "failure_scenarios": [
+                "Given I am not the creator of the badge or not logged in, When I try to delete the badge, Then I do not see the delete option or receive an error message.",
+                "Given a server error occurs, When I try to delete the badge, Then I receive an error message indicating the deletion could not be completed."
+            ]
+        },
+        {
+            "id": "US-006",
+            "short_title": "Login to Edit",
+            "user_story": "As a user, I want to login using Gmail or GitHub, so that I can edit badges.",
+            "priority": "Must Have",
+            "success_scenarios": [
+                "Given I am not logged in, When I login with Gmail or GitHub, Then I am authenticated and can edit badges."
+            ],
+            "failure_scenarios": [
+                "Given I provide incorrect credentials, When I try to login, Then I receive an error message indicating login failed.",
+                "Given the authentication service is unavailable, When I try to login, Then I receive an error message indicating the service is currently unavailable."
+            ]
+        }
+    ]
+}

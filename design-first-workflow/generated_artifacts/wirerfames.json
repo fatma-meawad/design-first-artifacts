@@ -1,0 +1,133 @@
+{
+  "pages": [
+    {
+      "page": "Badge List",
+      "description": "Displays a table of all badges with options to view details, sort by points or creation date. Users can view badges without logging in but need to login to edit.",
+      "actions": [
+        {
+          "label": "View Badge Details",
+          "navigatesTo": "Badge Details",
+          "visibleWhen": "always"
+        },
+        {
+          "label": "Create New Badge",
+          "navigatesTo": "Create Badge",
+          "visibleWhen": "user is logged in"
+        },
+        {
+          "label": "Sort by Points",
+          "action": "sort",
+          "sortBy": "points",
+          "visibleWhen": "always"
+        },
+        {
+          "label": "Sort by Creation Date",
+          "action": "sort",
+          "sortBy": "createdAt",
+          "visibleWhen": "always"
+        }
+      ],
+      "components": [
+        "AntD Table",
+        "AntD Button",
+        "AntD Avatar (for badge image preview)",
+        "AntD Space (for layout)"
+      ]
+    },
+    {
+      "page": "Badge Details",
+      "description": "Displays detailed information about a badge including all images in a gallery/slider. Users can edit or delete the badge if they are logged in and the creator.",
+      "actions": [
+        {
+          "label": "Edit Badge",
+          "navigatesTo": "Edit Badge",
+          "visibleWhen": "user is logged in and is the creator"
+        },
+        {
+          "label": "Delete Badge",
+          "action": "delete",
+          "visibleWhen": "user is logged in and is the creator"
+        },
+        {
+          "label": "Back to List",
+          "navigatesTo": "Badge List",
+          "visibleWhen": "always"
+        }
+      ],
+      "components": [
+        "AntD Card",
+        "AntD Image (for gallery/slider)",
+        "AntD Button",
+        "AntD Descriptions (for details layout)"
+      ]
+    },
+    {
+      "page": "Create Badge",
+      "description": "Form to create a new badge with title, description, points, and image upload options. Title must be unique, description length validated.",
+      "actions": [
+        {
+          "label": "Submit",
+          "action": "submit",
+          "visibleWhen": "form is valid"
+        },
+        {
+          "label": "Cancel",
+          "navigatesTo": "Badge List",
+          "visibleWhen": "always"
+        }
+      ],
+      "components": [
+        "AntD Form",
+        "AntD Input (for title and description)",
+        "AntD InputNumber (for points)",
+        "AntD Upload (for image upload)",
+        "AntD Button"
+      ]
+    },
+    {
+      "page": "Edit Badge",
+      "description": "Form to edit an existing badge. Similar to Create Badge but pre-filled with existing data.",
+      "actions": [
+        {
+          "label": "Update",
+          "action": "update",
+          "visibleWhen": "form is valid"
+        },
+        {
+          "label": "Cancel",
+          "navigatesTo": "Badge Details",
+          "visibleWhen": "always"
+        }
+      ],
+      "components": [
+        "AntD Form",
+        "AntD Input",
+        "AntD InputNumber",
+        "AntD Upload",
+        "AntD Button"
+      ]
+    },
+    {
+      "page": "Login",
+      "description": "Login page for users to authenticate via Gmail or GitHub to edit badges.",
+      "actions": [
+        {
+          "label": "Login with Gmail",
+          "action": "login",
+          "provider": "gmail",
+          "visibleWhen": "user is not logged in"
+        },
+        {
+          "label": "Login with GitHub",
+          "action": "login",
+          "provider": "github",
+          "visibleWhen": "user is not logged in"
+        }
+      ],
+      "components": [
+        "AntD Button",
+        "AntD Space (for layout)"
+      ]
+    }
+  ]
+}

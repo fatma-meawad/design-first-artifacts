@@ -1,0 +1,991 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Auth & Health API",
+    "version": "1.0.0",
+    "description": "Authentication (OAuth and local) and health check endpoints for the API."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "description": "Returns service status.",
+        "responses": {
+          "200": {
+            "description": "Service is up",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login with username and password",
+        "description": "Authenticate using local credentials and receive a JWT and user session data.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthToken"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/github": {
+      "get": {
+        "summary": "Initiate GitHub OAuth login",
+        "responses": {
+          "302": {
+            "description": "Redirect to GitHub login page"
+          }
+        }
+      }
+    },
+    "/auth/github/callback": {
+      "get": {
+        "summary": "Handle GitHub OAuth callback",
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthToken"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "summary": "Initiate Google OAuth login",
+        "responses": {
+          "302": {
+            "description": "Redirect to Google login page"
+          }
+        }
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "summary": "Handle Google OAuth callback",
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthToken"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/facebook": {
+      "get": {
+        "summary": "Initiate Facebook OAuth login",
+        "responses": {
+          "302": {
+            "description": "Redirect to Facebook login page"
+          }
+        }
+      }
+    },
+    "/auth/facebook/callback": {
+      "get": {
+        "summary": "Handle Facebook OAuth callback",
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthToken"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/badges": {
+      "get": {
+        "summary": "View Badge List - US-002 (Must Have)",
+        "description": "As a user, I want to view a list of all badges with options to sort by points or creation date, so that I can easily find badges of interest.",
+        "operationId": "listBadges",
+        "tags": [
+          "Badge"
+        ],
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort badges by 'points' or 'createdAt'",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "points",
+                "createdAt"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of badges returned",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of badges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Badge"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of badges"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "items": [
+                        {
+                          "id": "550e8400-e29b-41d4-a716-446655440000",
+                          "title": "First Badge",
+                          "description": "This is the first badge",
+                          "points": 100,
+                          "createdAt": "2023-01-01T00:00:00Z",
+                          "createdBy": "123e4567-e89b-12d3-a456-426614174000",
+                          "images": []
+                        }
+                      ],
+                      "total": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid sort parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Invalid sort parameter. Allowed values are 'points' or 'createdAt'",
+                      "code": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Badge - US-001 (Must Have)",
+        "description": "As a logged-in user, I want to create a new badge with a unique title, description, points, and optional images, so that I can recognize achievements.",
+        "operationId": "createBadge",
+        "tags": [
+          "Badge"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Badge object that needs to be created",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Badge"
+              },
+              "examples": {
+                "success": {
+                  "value": {
+                    "title": "First Badge",
+                    "description": "This is the first badge",
+                    "points": 100,
+                    "images": [
+                      {
+                        "url": "https://example.com/badge1.jpg",
+                        "size": 2.5
+                      }
+                    ]
+                  }
+                },
+                "failure": {
+                  "value": {
+                    "title": "",
+                    "description": "This is a badge",
+                    "points": -10,
+                    "images": [
+                      {
+                        "url": "invalid-url",
+                        "size": 10
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Badge created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Badge"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "id": "550e8400-e29b-41d4-a716-446655440000",
+                      "title": "First Badge",
+                      "description": "This is the first badge",
+                      "points": 100,
+                      "createdAt": "2023-01-01T00:00:00Z",
+                      "createdBy": "123e4567-e89b-12d3-a456-426614174000",
+                      "images": [
+                        {
+                          "url": "https://example.com/badge1.jpg",
+                          "size": 2.5
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Title must be unique",
+                      "code": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Unauthorized",
+                      "code": 401
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Description must be between 3 and 300 characters",
+                      "code": 422
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/badges/{id}": {
+      "get": {
+        "summary": "View Badge Details - US-003 (Must Have)",
+        "description": "As a user, I want to view detailed information about a badge including all images in a gallery/slider, so that I can see all details of the badge.",
+        "operationId": "getBadgeById",
+        "tags": [
+          "Badge"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the badge to return",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed information about a badge",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Badge"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "id": "550e8400-e29b-41d4-a716-446655440000",
+                      "title": "First Badge",
+                      "description": "This is the first badge",
+                      "points": 100,
+                      "createdAt": "2023-01-01T00:00:00Z",
+                      "createdBy": "123e4567-e89b-12d3-a456-426614174000",
+                      "images": [
+                        {
+                          "url": "https://example.com/badge1.jpg",
+                          "size": 2.5
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Badge not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Badge not found",
+                      "code": 404
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Edit Badge - US-004 (Must Have)",
+        "description": "As the creator of a badge, I want to edit the badge's details, so that I can update the badge's information.",
+        "operationId": "updateBadgeById",
+        "tags": [
+          "Badge"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the badge to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Badge object that needs to be updated",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Badge"
+              },
+              "examples": {
+                "success": {
+                  "value": {
+                    "title": "Updated Badge",
+                    "description": "This is an updated badge",
+                    "points": 200,
+                    "images": [
+                      {
+                        "url": "https://example.com/badge2.jpg",
+                        "size": 3
+                      }
+                    ]
+                  }
+                },
+                "failure": {
+                  "value": {
+                    "title": "",
+                    "description": "This is a badge",
+                    "points": -10,
+                    "images": [
+                      {
+                        "url": "invalid-url",
+                        "size": 10
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Badge updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Badge"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "id": "550e8400-e29b-41d4-a716-446655440000",
+                      "title": "Updated Badge",
+                      "description": "This is an updated badge",
+                      "points": 200,
+                      "createdAt": "2023-01-01T00:00:00Z",
+                      "createdBy": "123e4567-e89b-12d3-a456-426614174000",
+                      "modifiedAt": "2023-01-02T00:00:00Z",
+                      "modifiedBy": "123e4567-e89b-12d3-a456-426614174000",
+                      "images": [
+                        {
+                          "url": "https://example.com/badge2.jpg",
+                          "size": 3
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Title must be unique",
+                      "code": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Unauthorized",
+                      "code": 401
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "You are not the creator of this badge",
+                      "code": 403
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Badge not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Badge not found",
+                      "code": 404
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Description must be between 3 and 300 characters",
+                      "code": 422
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Badge - US-005 (Must Have)",
+        "description": "As the creator of a badge, I want to delete the badge, so that I can remove it from the system.",
+        "operationId": "deleteBadgeById",
+        "tags": [
+          "Badge"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the badge to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Badge deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Unauthorized",
+                      "code": 401
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "You are not the creator of this badge",
+                      "code": 403
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Badge not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Badge not found",
+                      "code": 404
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "admin"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        }
+      },
+      "UserSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123"
+          },
+          "username": {
+            "type": "string",
+            "example": "admin"
+          },
+          "provider": {
+            "type": "string",
+            "example": "local"
+          },
+          "role": {
+            "type": "string",
+            "example": "admin"
+          }
+        }
+      },
+      "AuthToken": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "JWT token for authenticated requests",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserSession"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Unauthorized"
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid credentials"
+          }
+        }
+      },
+      "Badge": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "points",
+          "createdBy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the badge",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the badge, must be unique",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the badge",
+            "minLength": 3,
+            "maxLength": 300
+          },
+          "points": {
+            "type": "integer",
+            "description": "Points assigned to the badge",
+            "minimum": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the badge was created",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "User ID of the badge creator",
+            "format": "uuid"
+          },
+          "modifiedBy": {
+            "type": "string",
+            "description": "User ID of the last modifier",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "modifiedAt": {
+            "type": "string",
+            "description": "Timestamp when the badge was last modified",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "images": {
+            "type": "array",
+            "description": "List of images associated with the badge",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            },
+            "maxItems": 5
+          }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the image",
+            "format": "uri"
+          },
+          "size": {
+            "type": "number",
+            "description": "Size of the image in MB",
+            "maximum": 5
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "email"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the user",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the user",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the user",
+            "format": "email"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Badge",
+      "description": "Operations related to badges"
+    },
+    {
+      "name": "User",
+      "description": "Operations related to users"
+    },
+    {
+      "name": "Image",
+      "description": "Operations related to images"
+    }
+  ]
+}
